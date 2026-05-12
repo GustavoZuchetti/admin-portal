@@ -1,0 +1,146 @@
+'use client'
+import { useState, useEffect } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
+import Link from 'next/link'
+
+export default function OrgDetail() {
+  const { id } = useParams()
+  const router = useRouter()
+  const [org,      setOrg]      = useState(null)
+  const [users,    setUsers]    = useState([])
+  const [empresas, setEmpresas] = useState([])
+  const [invEmail, setInvEmail] = useState('')
+  const [invRole,  setInvRole]  = useState('org_admin')
+  const [invLink,  setInvLink]  = useState('')
+  const [saving,   setSaving]   = useState(false)
+  const [loading,  setLoading]  = useState(true)
+  const CLIENT_URL = process.env.NEXT_PUBLIC_CLIENT_PORTAL_URL || 'http://localhost:3000'
+
+  const load = async () => {
+    const [{ data: o }, { data: u }, { data: e }] = await Promise.all([
+      supabase.from('organizations').select('*').eq('id', id).single(),
+      supabase.from('profiles').select('*').eq('organization_id', id),
+      supabase.from('empresas').select('*').eq('organization_id', id),
+    ])
+    setOrg(o); setUsers(u||[]); setEmpresas(e||[])
+    setLoading(false)
+  }
+
+  useEffect(() => { if (id) load() }, [id])
+
+  const saveOrg = async () => {
+    setSaving(true)
+    await supabase.from('organizations').update({ nome:org.nome, plano:org.plano, status:org.status }).eq('id', id)
+    setSaving(false)
+    alert('Salvo!')
+  }
+
+  const createInvite = async () => {
+    if (!invEmail.trim()) return
+    const { data, error } = await supabase.from('invites').insert({ organization_id:id, email:invEmail, role:invRole }).select().single()
+    if (error) { alert('Erro: '+error.message); return }
+    const link = `${window.location.origin}/aceitar-convite?token=${data.token}`
+    setInvLink(link)
+    setInvEmail('')
+  }
+
+  if (loading) return <div style={{ color:'var(--text4)',padding:40 }}>Carregando...</div>
+  if (!org) return <div style={{ color:'#fca5a5',padding:40 }}>Organização não encontrada.</div>
+
+  return (
+    <div>
+      <div style={{ display:'flex',alignItems:'center',gap:12,marginBottom:28 }}>
+        <Link href="/dashboard/organizations" style={{ color:'var(--text4)',fontSize:13,textDecoration:'none' }}>← Organizações</Link>
+        <span style={{ color:'var(--text4)' }}>/</span>
+        <h1 style={{ fontSize:20,fontWeight:800,color:'var(--text1)',margin:0 }}>{org.nome}</h1>
+        <a href={`${CLIENT_URL}?org=${id}`} target="_blank" rel="noreferrer"
+          style={{ marginLeft:'auto',background:'rgba(139,92,246,0.1)',color:'#a78bfa',border:'1px solid rgba(139,92,246,0.2)',padding:'7px 16px',borderRadius:8,fontSize:13,fontWeight:600,textDecoration:'none' }}>
+          👁 Ver como cliente
+        </a>
+      </div>
+
+      <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:16,marginBottom:16 }}>
+        {/* Dados da Org */}
+        <div style={{ background:'var(--surface)',border:'1px solid var(--border)',borderRadius:12,padding:'20px 24px' }}>
+          <h2 style={{ fontSize:14,fontWeight:700,color:'var(--text1)',marginBottom:16 }}>Dados da Organização</h2>
+          <div style={{ display:'flex',flexDirection:'column',gap:12 }}>
+            {[['Nome',org.nome,'nome'],['Plano','','plano'],['Status','','status']].map(([label,val,key])=>(
+              <div key={key}>
+                <label style={{ fontSize:11,color:'var(--text4)',fontWeight:700,textTransform:'uppercase',display:'block',marginBottom:4 }}>{label}</label>
+                {key==='plano'?(
+                  <select value={org.plano} onChange={e=>setOrg({...org,plano:e.target.value})} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid var(--border)',borderRadius:7,color:'var(--text1)',padding:'8px 10px',fontSize:13,outline:'none'}}>
+                    <option>Basico</option><option>Pro</option><option>Enterprise</option>
+                  </select>
+                ):key==='status'?(
+                  <select value={org.status} onChange={e=>setOrg({...org,status:e.target.value})} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid var(--border)',borderRadius:7,color:'var(--text1)',padding:'8px 10px',fontSize:13,outline:'none'}}>
+                    <option>Ativo</option><option>Trial</option><option>Suspenso</option>
+                  </select>
+                ):(
+                  <input value={org[key]} onChange={e=>setOrg({...org,[key]:e.target.value})} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid var(--border)',borderRadius:7,color:'var(--text1)',padding:'8px 10px',fontSize:13,outline:'none'}}/>
+                )}
+              </div>
+            ))}
+            <button onClick={saveOrg} disabled={saving} style={{background:'#3b82f6',color:'#fff',border:'none',borderRadius:8,padding:'10px',fontSize:13,fontWeight:700,cursor:'pointer',marginTop:4}}>
+              {saving?'Salvando...':'Salvar Alterações'}
+            </button>
+          </div>
+        </div>
+
+        {/* Convidar usuário */}
+        <div style={{ background:'var(--surface)',border:'1px solid var(--border)',borderRadius:12,padding:'20px 24px' }}>
+          <h2 style={{ fontSize:14,fontWeight:700,color:'var(--text1)',marginBottom:16 }}>Convidar Usuário</h2>
+          <div style={{ display:'flex',flexDirection:'column',gap:10 }}>
+            <input type="email" placeholder="email@cliente.com" value={invEmail} onChange={e=>setInvEmail(e.target.value)}
+              style={{background:'rgba(255,255,255,0.05)',border:'1px solid var(--border)',borderRadius:7,color:'var(--text1)',padding:'9px 12px',fontSize:13,outline:'none'}}/>
+            <select value={invRole} onChange={e=>setInvRole(e.target.value)} style={{background:'rgba(255,255,255,0.05)',border:'1px solid var(--border)',borderRadius:7,color:'var(--text1)',padding:'9px 12px',fontSize:13,outline:'none'}}>
+              <option value="org_admin">Administrador da Org</option>
+              <option value="user">Usuário</option>
+            </select>
+            <button onClick={createInvite} style={{background:'#22c55e',color:'#fff',border:'none',borderRadius:8,padding:'10px',fontSize:13,fontWeight:700,cursor:'pointer'}}>Gerar Link de Convite</button>
+            {invLink&&(
+              <div style={{ background:'rgba(34,197,94,0.08)',border:'1px solid rgba(34,197,94,0.2)',borderRadius:8,padding:'10px 12px' }}>
+                <div style={{ fontSize:11,color:'#86efac',marginBottom:6 }}>✅ Link gerado (válido por 7 dias):</div>
+                <div style={{ fontSize:11,color:'#4ade80',wordBreak:'break-all',cursor:'pointer' }} onClick={()=>navigator.clipboard.writeText(invLink)}>{invLink}</div>
+                <div style={{ fontSize:11,color:'var(--text4)',marginTop:4 }}>Clique para copiar</div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Usuários */}
+      <div style={{ background:'var(--surface)',border:'1px solid var(--border)',borderRadius:12,padding:'20px 24px',marginBottom:16 }}>
+        <h2 style={{ fontSize:14,fontWeight:700,color:'var(--text1)',marginBottom:14 }}>Usuários ({users.length})</h2>
+        {users.length===0?<div style={{ color:'var(--text4)',fontSize:13 }}>Nenhum usuário cadastrado ainda.</div>:(
+          <table style={{ width:'100%',borderCollapse:'collapse',fontSize:13 }}>
+            <thead><tr style={{ borderBottom:'1px solid var(--border)' }}>
+              {['E-mail','Perfil','Desde'].map(h=><th key={h} style={{ padding:'7px 10px',textAlign:'left',color:'var(--text4)',fontSize:11,fontWeight:700,textTransform:'uppercase' }}>{h}</th>)}
+            </tr></thead>
+            <tbody>
+              {users.map(u=>(
+                <tr key={u.id} style={{ borderBottom:'1px solid var(--border)' }}>
+                  <td style={{ padding:'9px 10px',color:'var(--text1)' }}>{u.email}</td>
+                  <td style={{ padding:'9px 10px' }}>
+                    <span style={{ background:u.role==='super_admin'?'rgba(239,68,68,0.1)':'rgba(59,130,246,0.1)', color:u.role==='super_admin'?'#fca5a5':'#60a5fa', padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:700 }}>{u.role}</span>
+                  </td>
+                  <td style={{ padding:'9px 10px',color:'var(--text4)',fontSize:12 }}>{new Date(u.created_at).toLocaleDateString('pt-BR')}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {/* Empresas */}
+      <div style={{ background:'var(--surface)',border:'1px solid var(--border)',borderRadius:12,padding:'20px 24px' }}>
+        <h2 style={{ fontSize:14,fontWeight:700,color:'var(--text1)',marginBottom:14 }}>Empresas ({empresas.length})</h2>
+        <div style={{ display:'flex',flexWrap:'wrap',gap:8 }}>
+          {empresas.map(e=>(
+            <span key={e.id} style={{ background:'rgba(255,255,255,0.06)',border:'1px solid var(--border)',borderRadius:8,padding:'7px 14px',fontSize:13,color:'var(--text2)' }}>🏭 {e.nome}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
