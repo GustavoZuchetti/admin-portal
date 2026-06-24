@@ -91,8 +91,7 @@ export default function Login() {
         <div className="brand-section" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '60px 72px' }}>
           <div style={{ maxWidth: 500 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 56 }}>
-              <div style={{ width: 42, height: 42, background: 'linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: '#fff', fontSize: 16, boxShadow: '0 4px 16px rgba(59,130,246,0.35)' }}>FS</div>
-              <span style={{ fontSize: 18, fontWeight: 700, color: 'rgba(255,255,255,0.9)', letterSpacing: '-0.3px' }}>Facesign</span>
+              <img src="/logo-fs.png" alt="Facesign" style={{ height: 38, maxWidth: 150, objectFit: 'contain' }} />
               <span style={{ fontSize: 10, fontWeight: 700, color: '#f59e0b', background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.25)', padding: '3px 9px', borderRadius: 6, letterSpacing: '1px', textTransform: 'uppercase' }}>Admin</span>
             </div>
 
