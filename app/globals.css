@@ -1,6 +1,27 @@
-*, *::before, *::after { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --bg: #0f1117; --surface: #1a1f2e; --surface2: #242938;
   --border: rgba(255,255,255,0.08); --text1: #f1f5f9; --text2: #94a3b8; --text4: #475569;
   --brand: #3b82f6; --success: #22c55e; --danger: #ef4444; --warning: #f59e0b;
+}
+body { background: var(--bg); color: var(--text1); font-family: 'DM Sans', system-ui, sans-serif; }
+
+/* Selects e inputs com aparência dark consistente em todos os OS/browsers */
+select {
+  color-scheme: dark;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--surface2) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 32px !important;
+}
+select option {
+  background-color: #1a1f2e;
+  color: #f1f5f9;
+}
+input, textarea {
+  color-scheme: dark;
+  background-color: var(--surface2) !important;
 }

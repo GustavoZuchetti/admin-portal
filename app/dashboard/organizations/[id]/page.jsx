@@ -40,7 +40,7 @@ export default function OrgDetail() {
     if (!invEmail.trim()) return
     const { data, error } = await supabase.from('invites').insert({ organization_id:id, email:invEmail, role:invRole }).select().single()
     if (error) { alert('Erro: '+error.message); return }
-    const link = `${window.location.origin}/aceitar-convite?token=${data.token}`
+    const link = `${CLIENT_URL}/aceitar-convite?token=${data.token}`
     setInvLink(link)
     setInvEmail('')
   }
@@ -69,15 +69,15 @@ export default function OrgDetail() {
               <div key={key}>
                 <label style={{ fontSize:11,color:'var(--text4)',fontWeight:700,textTransform:'uppercase',display:'block',marginBottom:4 }}>{label}</label>
                 {key==='plano'?(
-                  <select value={org.plano} onChange={e=>setOrg({...org,plano:e.target.value})} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid var(--border)',borderRadius:7,color:'var(--text1)',padding:'8px 10px',fontSize:13,outline:'none'}}>
+                  <select value={org.plano} onChange={e=>setOrg({...org,plano:e.target.value})} style={{width:'100%',background:'#242938',border:'1px solid rgba(255,255,255,0.08)',borderRadius:7,color:'#f1f5f9',padding:'8px 10px',fontSize:13,outline:'none',appearance:'none',WebkitAppearance:'none',backgroundImage:"url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\")",backgroundRepeat:'no-repeat',backgroundPosition:'right 10px center',paddingRight:32}}>
                     <option>Basico</option><option>Pro</option><option>Enterprise</option>
                   </select>
                 ):key==='status'?(
-                  <select value={org.status} onChange={e=>setOrg({...org,status:e.target.value})} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid var(--border)',borderRadius:7,color:'var(--text1)',padding:'8px 10px',fontSize:13,outline:'none'}}>
+                  <select value={org.status} onChange={e=>setOrg({...org,status:e.target.value})} style={{width:'100%',background:'#242938',border:'1px solid rgba(255,255,255,0.08)',borderRadius:7,color:'#f1f5f9',padding:'8px 10px',fontSize:13,outline:'none',appearance:'none',WebkitAppearance:'none',backgroundImage:"url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\")",backgroundRepeat:'no-repeat',backgroundPosition:'right 10px center',paddingRight:32}}>
                     <option>Ativo</option><option>Trial</option><option>Suspenso</option>
                   </select>
                 ):(
-                  <input value={org[key]} onChange={e=>setOrg({...org,[key]:e.target.value})} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid var(--border)',borderRadius:7,color:'var(--text1)',padding:'8px 10px',fontSize:13,outline:'none'}}/>
+                  <input value={org[key]} onChange={e=>setOrg({...org,[key]:e.target.value})} style={{width:'100%',background:'#242938',border:'1px solid rgba(255,255,255,0.08)',borderRadius:7,color:'#f1f5f9',padding:'8px 10px',fontSize:13,outline:'none',appearance:'none',WebkitAppearance:'none',backgroundImage:"url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\")",backgroundRepeat:'no-repeat',backgroundPosition:'right 10px center',paddingRight:32}}/>
                 )}
               </div>
             ))}
@@ -92,8 +92,8 @@ export default function OrgDetail() {
           <h2 style={{ fontSize:14,fontWeight:700,color:'var(--text1)',marginBottom:16 }}>Convidar Usuário</h2>
           <div style={{ display:'flex',flexDirection:'column',gap:10 }}>
             <input type="email" placeholder="email@cliente.com" value={invEmail} onChange={e=>setInvEmail(e.target.value)}
-              style={{background:'rgba(255,255,255,0.05)',border:'1px solid var(--border)',borderRadius:7,color:'var(--text1)',padding:'9px 12px',fontSize:13,outline:'none'}}/>
-            <select value={invRole} onChange={e=>setInvRole(e.target.value)} style={{background:'rgba(255,255,255,0.05)',border:'1px solid var(--border)',borderRadius:7,color:'var(--text1)',padding:'9px 12px',fontSize:13,outline:'none'}}>
+              style={{background:'#242938',border:'1px solid var(--border)',borderRadius:7,color:'var(--text1)',padding:'9px 12px',fontSize:13,outline:'none'}}/>
+            <select value={invRole} onChange={e=>setInvRole(e.target.value)} style={{background:'#242938',border:'1px solid var(--border)',borderRadius:7,color:'var(--text1)',padding:'9px 12px',fontSize:13,outline:'none'}}>
               <option value="org_admin">Administrador da Org</option>
               <option value="user">Usuário</option>
             </select>
