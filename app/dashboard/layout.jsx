@@ -10,6 +10,7 @@ const ICONS = {
   orgs: 'M3 21h18M5 21V7l8-4v18M19 21V11l-6-4M9 9v.01M9 12v.01M9 15v.01M9 18v.01',
   users: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75',
   logout: 'M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9',
+  logs: 'M9 12h6m-6 4h6M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 5h14',
 }
 
 function Icon({ path, size = 16, color = 'currentColor' }) {
@@ -24,6 +25,7 @@ const NAV = [
   { href: '/dashboard',               label: 'Dashboard',    icon: 'dashboard', exact: true  },
   { href: '/dashboard/organizations', label: 'Organizações', icon: 'orgs',      exact: false },
   { href: '/dashboard/users',         label: 'Usuários',     icon: 'users',     exact: false },
+  { href: '/dashboard/logs',          label: 'Logs',         icon: 'logs',      exact: false },
 ]
 
 export default function AdminLayout({ children }) {
