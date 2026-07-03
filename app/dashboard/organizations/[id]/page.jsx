@@ -31,7 +31,7 @@ export default function OrgDetail() {
 
   const saveOrg = async () => {
     setSaving(true)
-    await supabase.from('organizations').update({ nome:org.nome, plano:org.plano, status:org.status }).eq('id', id)
+    await supabase.from('organizations').update({ nome:org.nome, plano:org.plano, status:org.status, api_dre_liberado:!!org.api_dre_liberado, api_fluxo_liberado:!!org.api_fluxo_liberado }).eq('id', id)
     setSaving(false)
     alert('Salvo!')
   }
@@ -65,6 +65,25 @@ export default function OrgDetail() {
         <div style={{ background:'var(--surface)',border:'1px solid var(--border)',borderRadius:12,padding:'20px 24px' }}>
           <h2 style={{ fontSize:14,fontWeight:700,color:'var(--text1)',marginBottom:16 }}>Dados da Organização</h2>
           <div style={{ display:'flex',flexDirection:'column',gap:12 }}>
+            {/* ── Liberação de Importação via API (por módulo) ── */}
+            <div style={{ gridColumn:'1 / -1', background:'#1c2130', border:'1px solid rgba(255,255,255,0.07)', borderRadius:10, padding:'14px 16px', marginBottom:4 }}>
+              <div style={{ fontSize:11, fontWeight:700, color:'#94a3b8', textTransform:'uppercase', letterSpacing:'0.8px', marginBottom:10 }}>
+                Importação via API (Bling)
+              </div>
+              <div style={{ display:'flex', gap:24, flexWrap:'wrap' }}>
+                {[['api_dre_liberado','Liberar módulo DRE'],['api_fluxo_liberado','Liberar módulo Fluxo de Caixa']].map(([campo,rotulo])=>(
+                  <label key={campo} style={{ display:'flex', alignItems:'center', gap:8, fontSize:13, color:'#e2e8f0', cursor:'pointer' }}>
+                    <input type="checkbox" checked={!!org[campo]} onChange={e=>setOrg({...org,[campo]:e.target.checked})} />
+                    {rotulo}
+                  </label>
+                ))}
+              </div>
+              <div style={{ fontSize:11, color:'#64748b', marginTop:8, lineHeight:1.5 }}>
+                Com a liberação, a organização configura credenciais e conexão OAuth em Configurações → Integrações (API).
+                Ativar um módulo via API desabilita a importação por arquivo desse módulo.
+              </div>
+            </div>
+
             {[['Nome',org.nome,'nome'],['Plano','','plano'],['Status','','status']].map(([label,val,key])=>(
               <div key={key}>
                 <label style={{ fontSize:11,color:'var(--text4)',fontWeight:700,textTransform:'uppercase',display:'block',marginBottom:4 }}>{label}</label>
