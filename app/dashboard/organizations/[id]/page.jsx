@@ -18,12 +18,12 @@ export default function OrgDetail() {
   const CLIENT_URL = process.env.NEXT_PUBLIC_CLIENT_PORTAL_URL || 'http://localhost:3000'
 
   const load = async () => {
-    const [{ data: o }, { data: u }, { data: e }] = await Promise.all([
-      supabase.from('organizations').select('*').eq('id', id).single(),
-      supabase.from('profiles').select('*').eq('organization_id', id),
-      supabase.from('empresas').select('*').eq('organization_id', id),
-    ])
-    setOrg(o); setUsers(u||[]); setEmpresas(e||[])
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      const r = await fetch(`/api/admin/data?scope=org&id=${id}`, { headers: { 'Authorization': `Bearer ${session?.access_token}` } })
+      const j = await r.json()
+      setOrg(j.org); setUsers(j.profiles||[]); setEmpresas(j.empresas||[])
+    } catch { /* mantém estado */ }
     setLoading(false)
   }
 
@@ -31,9 +31,17 @@ export default function OrgDetail() {
 
   const saveOrg = async () => {
     setSaving(true)
-    await supabase.from('organizations').update({ nome:org.nome, plano:org.plano, status:org.status, api_dre_liberado:!!org.api_dre_liberado, api_fluxo_liberado:!!org.api_fluxo_liberado }).eq('id', id)
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      const r = await fetch('/api/admin/organizations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
+        body: JSON.stringify({ id, nome:org.nome, plano:org.plano, status:org.status, api_dre_liberado:!!org.api_dre_liberado, api_fluxo_liberado:!!org.api_fluxo_liberado }),
+      })
+      const j = await r.json()
+      alert(j.ok ? 'Salvo!' : ('Erro: ' + (j.error||'desconhecido')))
+    } catch (e) { alert('Erro: ' + e.message) }
     setSaving(false)
-    alert('Salvo!')
   }
 
   const createInvite = async () => {

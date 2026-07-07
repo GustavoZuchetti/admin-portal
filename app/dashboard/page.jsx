@@ -13,21 +13,13 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     const load = async () => {
-      const [
-        { count: orgsCount },
-        { count: usersCount },
-        { count: empCount },
-        { count: lanCount },
-        { data: orgList },
-      ] = await Promise.all([
-        supabase.from('organizations').select('*',{count:'exact',head:true}),
-        supabase.from('profiles').select('*',{count:'exact',head:true}),
-        supabase.from('empresas').select('*',{count:'exact',head:true}),
-        supabase.from('lancamentos').select('*',{count:'exact',head:true}),
-        supabase.from('organizations').select(`*, profiles(count), empresas(count), lancamentos(count)`).order('created_at',{ascending:false}),
-      ])
-      setMetrics({ orgs: orgsCount||0, usuarios: usersCount||0, empresas: empCount||0, lancamentos: lanCount||0 })
-      setOrgs(orgList || [])
+      try {
+        const { data: { session } } = await supabase.auth.getSession()
+        const r = await fetch('/api/admin/data?scope=dashboard', { headers: { 'Authorization': `Bearer ${session?.access_token}` } })
+        const j = await r.json()
+        setMetrics({ orgs: j.counts?.organizations||0, usuarios: j.counts?.profiles||0, empresas: j.counts?.empresas||0, lancamentos: 0 })
+        setOrgs(j.orgs || [])
+      } catch { setOrgs([]) }
       setLoading(false)
     }
     load()

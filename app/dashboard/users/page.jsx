@@ -282,7 +282,7 @@ export default function Users() {
 
   const loadData = useCallback(async () => {
     const [{ data: u }, { data: o }] = await Promise.all([
-      supabase.from('profiles').select('*, organizations(nome, status, plano)').order('created_at', { ascending: false }),
+      (async () => { const { data: { session } } = await supabase.auth.getSession(); const r = await fetch('/api/admin/data?scope=users', { headers: { 'Authorization': `Bearer ${session?.access_token}` } }); const j = await r.json(); return { data: j.users || [] } })(),
       supabase.from('organizations').select('id, nome, status, plano').order('nome'),
     ])
     setUsers(u || [])

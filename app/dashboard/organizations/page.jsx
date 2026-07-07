@@ -11,10 +11,16 @@ export default function Organizations() {
 
   const load = async () => {
     setLoading(true)
-    const { data } = await supabase.from('organizations')
-      .select('*, profiles(id,email,role), empresas(id,nome)')
-      .order('nome')
-    setOrgs(data || [])
+    try {
+      // Via service role (server-side): o super admin enxerga TODAS as
+      // organizações e suas empresas/usuários, sem o recorte do RLS
+      const { data: { session } } = await supabase.auth.getSession()
+      const r = await fetch('/api/admin/organizations', {
+        headers: { 'Authorization': `Bearer ${session?.access_token}` },
+      })
+      const j = await r.json()
+      setOrgs(j.orgs || [])
+    } catch { setOrgs([]) }
     setLoading(false)
   }
 
