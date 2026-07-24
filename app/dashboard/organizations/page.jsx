@@ -32,7 +32,7 @@ export default function Organizations() {
     <div>
       <div style={{ display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24 }}>
         <h1 style={{ fontSize:22,fontWeight:800,color:'var(--text1)',margin:0 }}>Organizações</h1>
-        <Link href="/dashboard/organizations/new" style={{ background:'#3b82f6',color:'#fff',borderRadius:8,padding:'9px 20px',fontSize:13,fontWeight:700,textDecoration:'none' }}>+ Nova Organização</Link>
+        <Link href="/dashboard/organizations/new" style={{ background:'var(--brand)',color:'#fff',borderRadius:8,padding:'9px 20px',fontSize:13,fontWeight:700,textDecoration:'none' }}>+ Nova Organização</Link>
       </div>
       <input value={busca} onChange={e=>setBusca(e.target.value)} placeholder="Buscar organização..."
         style={{ width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid var(--border)',borderRadius:8,color:'var(--text1)',padding:'10px 14px',fontSize:13,outline:'none',marginBottom:16 }}/>
@@ -48,11 +48,11 @@ export default function Organizations() {
             </div>
             <div style={{ display:'flex',gap:8 }}>
               <Link href={`/dashboard/organizations/${o.id}`}
-                style={{ background:'rgba(59,130,246,0.1)',color:'#60a5fa',border:'1px solid rgba(59,130,246,0.2)',padding:'6px 14px',borderRadius:7,fontSize:12,fontWeight:600,textDecoration:'none' }}>
+                style={{ background:'rgba(59,130,246,0.1)',color:'var(--brand-text)',border:'1px solid rgba(59,130,246,0.2)',padding:'6px 14px',borderRadius:7,fontSize:12,fontWeight:600,textDecoration:'none' }}>
                 Gerenciar
               </Link>
               <a href={`${CLIENT_URL}?org=${o.id}`} target="_blank" rel="noreferrer"
-                style={{ background:'rgba(139,92,246,0.1)',color:'#a78bfa',border:'1px solid rgba(139,92,246,0.2)',padding:'6px 14px',borderRadius:7,fontSize:12,fontWeight:600,textDecoration:'none' }}>
+                style={{ background:'rgba(139,92,246,0.1)',color:'var(--purple)',border:'1px solid rgba(139,92,246,0.2)',padding:'6px 14px',borderRadius:7,fontSize:12,fontWeight:600,textDecoration:'none' }}>
                 Ver Portal
               </a>
             </div>

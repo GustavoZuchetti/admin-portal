@@ -41,7 +41,7 @@ export default function NewOrg() {
 
   if (result) return (
     <div>
-      <h1 style={{ fontSize:22,fontWeight:800,color:'var(--text1)',marginBottom:24 }}>✅ Organização Criada!</h1>
+      <h1 style={{ fontSize:22,fontWeight:800,color:'var(--text1)',marginBottom:24 }}>Organização criada</h1>
       <div style={{ background:'var(--surface)',border:'1px solid var(--border)',borderRadius:12,padding:28,maxWidth:520 }}>
         <div style={{ marginBottom:20 }}>
           <div style={{ fontSize:11,color:'var(--text4)',fontWeight:700,textTransform:'uppercase',marginBottom:6 }}>Organização</div>
@@ -50,13 +50,13 @@ export default function NewOrg() {
         </div>
         {result.inviteLink && (
           <div style={{ background:'rgba(34,197,94,0.08)',border:'1px solid rgba(34,197,94,0.2)',borderRadius:10,padding:'14px 16px',marginBottom:20 }}>
-            <div style={{ fontSize:12,color:'#86efac',fontWeight:700,marginBottom:8 }}>📧 Link de convite gerado para o administrador:</div>
-            <div style={{ fontSize:12,color:'#4ade80',wordBreak:'break-all' }}>{result.inviteLink}</div>
-            <button onClick={()=>navigator.clipboard.writeText(result.inviteLink)} style={{ marginTop:8,background:'rgba(34,197,94,0.15)',color:'#4ade80',border:'none',borderRadius:6,padding:'5px 12px',fontSize:11,fontWeight:600,cursor:'pointer' }}>Copiar Link</button>
+            <div style={{ fontSize:12,color:'var(--success)',fontWeight:700,marginBottom:8 }}>Link de convite gerado para o administrador:</div>
+            <div style={{ fontSize:12,color:'var(--success)',wordBreak:'break-all' }}>{result.inviteLink}</div>
+            <button onClick={()=>navigator.clipboard.writeText(result.inviteLink)} style={{ marginTop:8,background:'rgba(34,197,94,0.15)',color:'var(--success)',border:'none',borderRadius:6,padding:'5px 12px',fontSize:11,fontWeight:600,cursor:'pointer' }}>Copiar Link</button>
           </div>
         )}
         <div style={{ display:'flex',gap:10 }}>
-          <Link href={`/dashboard/organizations/${result.org.id}`} style={{ background:'#3b82f6',color:'#fff',borderRadius:8,padding:'9px 18px',fontSize:13,fontWeight:700,textDecoration:'none' }}>Gerenciar</Link>
+          <Link href={`/dashboard/organizations/${result.org.id}`} style={{ background:'var(--brand)',color:'#fff',borderRadius:8,padding:'9px 18px',fontSize:13,fontWeight:700,textDecoration:'none' }}>Gerenciar</Link>
           <Link href="/dashboard/organizations" style={{ background:'var(--surface2)',color:'var(--text2)',border:'1px solid var(--border)',borderRadius:8,padding:'9px 18px',fontSize:13,fontWeight:600,textDecoration:'none' }}>← Voltar</Link>
         </div>
       </div>
@@ -97,7 +97,7 @@ export default function NewOrg() {
               style={{ width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid var(--border)',borderRadius:8,color:'var(--text1)',padding:'10px 12px',fontSize:13,outline:'none' }}/>
             <div style={{ fontSize:11,color:'var(--text4)',marginTop:4 }}>Se informado, um link de convite será gerado automaticamente.</div>
           </div>
-          <button type="submit" disabled={saving||!form.nome.trim()} style={{ background:saving?'var(--surface2)':'#3b82f6',color:saving?'var(--text2)':'#fff',border:'none',borderRadius:8,padding:'12px',fontSize:14,fontWeight:700,cursor:saving?'not-allowed':'pointer',marginTop:4 }}>
+          <button type="submit" disabled={saving||!form.nome.trim()} style={{ background:saving?'var(--surface2)':'var(--brand)',color:saving?'var(--text2)':'#fff',border:'none',borderRadius:8,padding:'12px',fontSize:14,fontWeight:700,cursor:saving?'not-allowed':'pointer',marginTop:4 }}>
             {saving?'Criando...':'Criar Organização'}
           </button>
         </div>

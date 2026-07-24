@@ -33,7 +33,7 @@ export default function Login() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#080e1a', display: 'flex', position: 'relative', overflow: 'hidden', fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', position: 'relative', overflow: 'hidden', fontFamily: 'var(--font-body)' }}>
       <style>{`
         @keyframes fadeUp { from { opacity:0; transform:translateY(16px) } to { opacity:1; transform:translateY(0) } }
         @keyframes drift1 { 0%,100% { transform:translate(0,0) rotate(0) } 50% { transform:translate(20px,-24px) rotate(8deg) } }
@@ -44,13 +44,13 @@ export default function Login() {
         .adm-input {
           width:100%; background:rgba(255,255,255,0.04);
           border:1px solid rgba(255,255,255,0.1); border-radius:10px;
-          color:#f1f5f9; padding:12px 14px; font-size:14px; outline:none;
+          color:var(--text1); padding:12px 14px; font-size:14px; outline:none;
           transition:border-color 0.2s, box-shadow 0.2s, background 0.2s;
           box-sizing:border-box; font-family:inherit;
         }
-        .adm-input:focus { border-color:#3b82f6; background:rgba(59,130,246,0.05); box-shadow:0 0 0 3px rgba(59,130,246,0.12); }
+        .adm-input:focus { border-color:var(--brand); background:rgba(59,130,246,0.05); box-shadow:0 0 0 3px rgba(59,130,246,0.12); }
         .adm-btn {
-          background:linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
+          background:linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 100%);
           color:#fff; border:none; border-radius:10px; padding:13px;
           font-size:14px; font-weight:700; cursor:pointer; width:100%;
           transition:transform 0.15s, box-shadow 0.2s; font-family:inherit;
@@ -59,7 +59,7 @@ export default function Login() {
         .adm-btn:hover:not(:disabled) { transform:translateY(-1px); box-shadow:0 6px 22px rgba(59,130,246,0.4); }
         .adm-btn:disabled { opacity:0.6; cursor:not-allowed; }
         .shimmer-text {
-          background:linear-gradient(90deg, #60a5fa 0%, #a78bfa 40%, #60a5fa 80%);
+          background:linear-gradient(90deg, var(--brand-text) 0%, var(--purple) 40%, var(--brand-text) 80%);
           background-size:200% auto; -webkit-background-clip:text;
           background-clip:text; -webkit-text-fill-color:transparent;
           animation:shimmer 4s linear infinite;
@@ -92,7 +92,7 @@ export default function Login() {
           <div style={{ maxWidth: 500 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 56 }}>
               <img src="/logo-fs.png" alt="Facesign" style={{ height: 38, maxWidth: 150, objectFit: 'contain' }} />
-              <span style={{ fontSize: 10, fontWeight: 700, color: '#f59e0b', background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.25)', padding: '3px 9px', borderRadius: 6, letterSpacing: '1px', textTransform: 'uppercase' }}>Admin</span>
+              <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--warning)', background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.25)', padding: '3px 9px', borderRadius: 6, letterSpacing: '1px', textTransform: 'uppercase' }}>Admin</span>
             </div>
 
             <div style={{ marginBottom: 20 }}>
@@ -115,7 +115,7 @@ export default function Login() {
                 'Provisionamento de novos clientes',
               ].map((f, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '7px 0', fontSize: 13.5, color: 'rgba(203,213,225,0.75)', fontWeight: 300 }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#3b82f6', flexShrink: 0 }} />
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--brand)', flexShrink: 0 }} />
                   {f}
                 </div>
               ))}
@@ -146,7 +146,7 @@ export default function Login() {
               </div>
 
               {erro && (
-                <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 8, padding: '10px 12px', color: '#fca5a5', fontSize: 13 }}>
+                <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 8, padding: '10px 12px', color: 'var(--danger)', fontSize: 13 }}>
                   {erro}
                 </div>
               )}
@@ -159,7 +159,7 @@ export default function Login() {
             <div style={{ marginTop: 40, paddingTop: 20, borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: 11, color: 'rgba(100,116,139,0.7)' }}>© 2026 Facesign</span>
               <span style={{ fontSize: 11, color: 'rgba(245,158,11,0.7)', display: 'flex', alignItems: 'center', gap: 5 }}>
-                <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#f59e0b' }} />
+                <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--warning)' }} />
                 Acesso monitorado
               </span>
             </div>

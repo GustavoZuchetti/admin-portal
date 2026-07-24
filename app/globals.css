@@ -1,10 +1,48 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── IDENTIDADE FACESIGN (Direção 3) — mesma do portal do cliente ─────────
+   Os nomes das variáveis foram mantidos; só os VALORES passam a ser os
+   tokens oficiais, de modo que toda a interface se alinha de uma vez.
+   ------------------------------------------------------------------------ */
 :root {
-  --bg: #0f1117; --surface: #1a1f2e; --surface2: #242938;
-  --border: rgba(255,255,255,0.08); --text1: #f1f5f9; --text2: #94a3b8; --text4: #475569;
-  --brand: #3b82f6; --success: #22c55e; --danger: #ef4444; --warning: #f59e0b;
+  color-scheme: dark;
+
+  /* Superfícies — grafite */
+  --bg: #0d1117; --surface: #161c26; --surface2: #1b2330; --surface3: #212b3b;
+  --border: #26303f; --border2: #364357;
+  --hover: rgba(255,255,255,0.03); --hover2: rgba(255,255,255,0.055);
+
+  /* Texto (AA+ sobre --surface) */
+  --text1: #e9edf2; --text2: #9aa7b5; --text3: #8ca6ba; --text4: #7e96a9;
+
+  /* Marca — AZUL Facesign */
+  --brand: #3b82f6; --brand-dark: #2563eb; --brand-deep: #1e3a8a;
+  --brand-text: #60a5fa; --brand-glow: rgba(59,130,246,0.12);
+
+  /* Semânticas */
+  --success: #34d399; --danger: #f87171; --warning: #f59e0b; --purple: #a78bfa;
+  --success-bg: rgba(52,211,153,0.12); --danger-bg: rgba(248,113,113,0.12);
+  --warning-bg: rgba(245,158,11,0.12);
+
+  /* Tipografia */
+  --font-body:    'Manrope Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Space Grotesk Variable', var(--font-body);
+  --font-num:     'JetBrains Mono Variable', ui-monospace, 'SF Mono', Consolas, monospace;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.5);
 }
-body { background: var(--bg); color: var(--text1); font-family: 'DM Sans', system-ui, sans-serif; }
+
+body {
+  background: var(--bg);
+  color: var(--text1);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.02em; }
+.fs-num { font-family: var(--font-num); font-size: 0.94em; font-variant-numeric: tabular-nums lining-nums; }
+td, th { font-variant-numeric: tabular-nums lining-nums; }
+
 
 /* Selects e inputs com aparência dark consistente em todos os OS/browsers */
 select {
@@ -12,14 +50,14 @@ select {
   appearance: none;
   -webkit-appearance: none;
   background-color: var(--surface2) !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237e96a9' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;
   padding-right: 32px !important;
 }
 select option {
-  background-color: #1a1f2e;
-  color: #f1f5f9;
+  background-color: var(--surface2);
+  color: var(--text1);
 }
 input, textarea {
   color-scheme: dark;

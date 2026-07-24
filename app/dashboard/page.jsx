@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import SvgIcon from '@/components/SvgIcon'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 
@@ -25,8 +26,8 @@ export default function AdminDashboard() {
     load()
   }, [])
 
-  const statusColor = s => s==='Ativo'?'#22c55e':s==='Trial'?'#f59e0b':'#ef4444'
-  const planoColor  = p => p==='Enterprise'?'#8b5cf6':p==='Pro'?'#3b82f6':'#64748b'
+  const statusColor = s => s==='Ativo'?'var(--success)':s==='Trial'?'var(--warning)':'var(--danger)'
+  const planoColor  = p => p==='Enterprise'?'var(--purple)':p==='Pro'?'var(--brand)':'var(--text4)'
 
   return (
     <div>
@@ -38,13 +39,13 @@ export default function AdminDashboard() {
       {/* KPIs */}
       <div style={{ display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:14,marginBottom:28 }}>
         {[
-          { label:'Organizações',  val:metrics.orgs,        color:'#3b82f6', icon:'🏢' },
-          { label:'Usuários',      val:metrics.usuarios,    color:'#22c55e', icon:'👥' },
-          { label:'Empresas',      val:metrics.empresas,    color:'#8b5cf6', icon:'🏭' },
-          { label:'Lançamentos',   val:metrics.lancamentos, color:'#f59e0b', icon:'📊' },
+          { label:'Organizações',  val:metrics.orgs,        color:'var(--brand)', icon:'building' },
+          { label:'Usuários',      val:metrics.usuarios,    color:'var(--success)', icon:'users' },
+          { label:'Empresas',      val:metrics.empresas,    color:'var(--purple)', icon:'layers' },
+          { label:'Lançamentos',   val:metrics.lancamentos, color:'var(--warning)', icon:'chartBar' },
         ].map(k=>(
           <div key={k.label} style={{ background:'var(--surface)',border:'1px solid var(--border)',borderRadius:12,padding:'18px 20px',borderTop:`3px solid ${k.color}` }}>
-            <div style={{ fontSize:24,marginBottom:6 }}>{k.icon}</div>
+            <div style={{ marginBottom:8, color:k.color, display:'flex' }}><SvgIcon name={k.icon} size={20} color="currentColor" /></div>
             <div style={{ fontSize:28,fontWeight:900,color:k.color }}>{loading?'…':k.val.toLocaleString('pt-BR')}</div>
             <div style={{ fontSize:12,color:'var(--text2)',marginTop:2 }}>{k.label}</div>
           </div>
@@ -55,7 +56,7 @@ export default function AdminDashboard() {
       <div style={{ background:'var(--surface)',border:'1px solid var(--border)',borderRadius:12,overflow:'hidden' }}>
         <div style={{ display:'flex',justifyContent:'space-between',alignItems:'center',padding:'16px 20px',borderBottom:'1px solid var(--border)' }}>
           <h2 style={{ fontSize:15,fontWeight:700,color:'var(--text1)',margin:0 }}>Clientes Ativos</h2>
-          <Link href="/dashboard/organizations/new" style={{ background:'#3b82f6',color:'#fff',borderRadius:8,padding:'7px 16px',fontSize:13,fontWeight:700,textDecoration:'none' }}>+ Nova Organização</Link>
+          <Link href="/dashboard/organizations/new" style={{ background:'var(--brand)',color:'#fff',borderRadius:8,padding:'7px 16px',fontSize:13,fontWeight:700,textDecoration:'none' }}>+ Nova Organização</Link>
         </div>
         <table style={{ width:'100%',borderCollapse:'collapse',fontSize:13 }}>
           <thead>
@@ -82,11 +83,11 @@ export default function AdminDashboard() {
                 <td style={{ padding:'11px 16px',color:'var(--text4)',fontSize:12 }}>{fmtDate(o.created_at)}</td>
                 <td style={{ padding:'11px 16px' }}>
                   <div style={{ display:'flex',gap:6 }}>
-                    <Link href={`/dashboard/organizations/${o.id}`} style={{ background:'rgba(59,130,246,0.1)',color:'#60a5fa',border:'1px solid rgba(59,130,246,0.2)',padding:'4px 10px',borderRadius:6,fontSize:12,fontWeight:600,textDecoration:'none' }}>
+                    <Link href={`/dashboard/organizations/${o.id}`} style={{ background:'rgba(59,130,246,0.1)',color:'var(--brand-text)',border:'1px solid rgba(59,130,246,0.2)',padding:'4px 10px',borderRadius:6,fontSize:12,fontWeight:600,textDecoration:'none' }}>
                       Gerenciar
                     </Link>
                     <a href={`${CLIENT_URL}?org=${o.id}`} target="_blank" rel="noreferrer"
-                      style={{ background:'rgba(139,92,246,0.1)',color:'#a78bfa',border:'1px solid rgba(139,92,246,0.2)',padding:'4px 10px',borderRadius:6,fontSize:12,fontWeight:600,textDecoration:'none' }}>
+                      style={{ background:'rgba(139,92,246,0.1)',color:'var(--purple)',border:'1px solid rgba(139,92,246,0.2)',padding:'4px 10px',borderRadius:6,fontSize:12,fontWeight:600,textDecoration:'none' }}>
                       Ver Portal
                     </a>
                   </div>

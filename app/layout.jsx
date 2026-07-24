@@ -1,3 +1,6 @@
+import '@fontsource-variable/manrope'
+import '@fontsource-variable/space-grotesk'
+import '@fontsource-variable/jetbrains-mono'
 import './globals.css'
 export const metadata = {
   title: 'Admin Portal — Facesign',
@@ -18,7 +21,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR">
-      <body style={{ margin:0, fontFamily:"'Inter','Segoe UI',sans-serif", background:'#0f1117', color:'#f1f5f9' }}>
+      <body style={{ margin:0, fontFamily:'var(--font-body)', background:'var(--bg)', color:'var(--text1)' }}>
         {children}
       </body>
     </html>

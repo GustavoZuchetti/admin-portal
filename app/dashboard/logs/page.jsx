@@ -13,9 +13,9 @@ const TABELA_LABEL = {
   invites:             'Convites',
 }
 const ACAO_LABEL = {
-  INSERT: { texto: 'Criação',  cor: '#22c55e' },
-  UPDATE: { texto: 'Edição',   cor: '#3b82f6' },
-  DELETE: { texto: 'Exclusão', cor: '#ef4444' },
+  INSERT: { texto: 'Criação',  cor: 'var(--success)' },
+  UPDATE: { texto: 'Edição',   cor: 'var(--brand)' },
+  DELETE: { texto: 'Exclusão', cor: 'var(--danger)' },
 }
 const CAMPOS_OCULTOS = new Set(['id', 'created_at', 'updated_at'])
 
@@ -47,9 +47,9 @@ function LinhaDetalhe({ log }) {
                 <div style={{ fontSize: 10, color: 'var(--text4)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>{campo}</div>
                 {log.action === 'UPDATE' ? (
                   <div style={{ fontSize: 12.5 }}>
-                    <span style={{ color: '#f87171', textDecoration: 'line-through' }}>{formatarValor(antes)}</span>
+                    <span style={{ color: 'var(--danger)', textDecoration: 'line-through' }}>{formatarValor(antes)}</span>
                     {' → '}
-                    <span style={{ color: '#4ade80', fontWeight: 600 }}>{formatarValor(depois)}</span>
+                    <span style={{ color: 'var(--success)', fontWeight: 600 }}>{formatarValor(depois)}</span>
                   </div>
                 ) : (
                   <div style={{ fontSize: 12.5, color: 'var(--text1)' }}>{formatarValor(log.action === 'DELETE' ? antes : depois)}</div>
@@ -152,14 +152,14 @@ export default function Logs() {
           <input style={inp} type="date" value={fAte} onChange={e => setFAte(e.target.value)} title="Até" />
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
-          <button onClick={aplicarFiltros} style={{ background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 18px', fontSize: 12.5, fontWeight: 700, cursor: 'pointer' }}>Filtrar</button>
+          <button onClick={aplicarFiltros} style={{ background: 'var(--brand)', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 18px', fontSize: 12.5, fontWeight: 700, cursor: 'pointer' }}>Filtrar</button>
           <button onClick={limparFiltros} style={{ background: 'transparent', color: 'var(--text4)', border: '1px solid var(--border)', borderRadius: 8, padding: '8px 18px', fontSize: 12.5, fontWeight: 700, cursor: 'pointer' }}>Limpar</button>
         </div>
       </div>
 
       {erro && (
-        <div style={{ background: tabelaAusente ? 'rgba(245,158,11,0.08)' : 'rgba(239,68,68,0.08)', border: `1px solid ${tabelaAusente ? 'rgba(245,158,11,0.25)' : 'rgba(239,68,68,0.25)'}`, borderRadius: 10, padding: '14px 18px', marginBottom: 18, color: tabelaAusente ? '#fbbf24' : '#fca5a5', fontSize: 13, lineHeight: 1.6 }}>
-          {tabelaAusente ? '⚠️ ' : '✕ '}{erro}
+        <div style={{ background: tabelaAusente ? 'rgba(245,158,11,0.08)' : 'rgba(239,68,68,0.08)', border: `1px solid ${tabelaAusente ? 'rgba(245,158,11,0.25)' : 'rgba(239,68,68,0.25)'}`, borderRadius: 10, padding: '14px 18px', marginBottom: 18, color: tabelaAusente ? 'var(--warning)' : 'var(--danger)', fontSize: 13, lineHeight: 1.6 }}>
+          {erro}
         </div>
       )}
 
@@ -178,7 +178,7 @@ export default function Logs() {
             ) : logs.length === 0 && !erro ? (
               <tr><td colSpan={7} style={{ padding: 40, textAlign: 'center', color: 'var(--text4)' }}>Nenhum registro encontrado para os filtros selecionados.</td></tr>
             ) : logs.map(log => {
-              const acao = ACAO_LABEL[log.action] || { texto: log.action, cor: '#94a3b8' }
+              const acao = ACAO_LABEL[log.action] || { texto: log.action, cor: 'var(--text2)' }
               const aberto = expandido === log.id
               return (
                 <>

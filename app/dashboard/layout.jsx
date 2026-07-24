@@ -77,7 +77,7 @@ export default function AdminLayout({ children }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
             <img src="/logo-fs.png" alt="Facesign" style={{ height: 34, maxWidth: 130, objectFit: 'contain' }} />
             <span style={{
-              fontSize: 10, fontWeight: 800, color: '#f59e0b',
+              fontSize: 10, fontWeight: 800, color: 'var(--warning)',
               background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.3)',
               padding: '3px 9px', borderRadius: 6, letterSpacing: '1px', textTransform: 'uppercase',
             }}>Admin</span>
@@ -97,11 +97,11 @@ export default function AdminLayout({ children }) {
                 padding: '9px 12px', borderRadius: 8, marginBottom: 2,
                 fontSize: 13, fontWeight: active ? 700 : 400,
                 background: active ? 'rgba(59,130,246,0.15)' : 'transparent',
-                color: active ? '#60a5fa' : 'var(--text2)',
-                borderLeft: active ? '2px solid #3b82f6' : '2px solid transparent',
+                color: active ? 'var(--brand-text)' : 'var(--text2)',
+                borderLeft: active ? '2px solid var(--brand)' : '2px solid transparent',
                 textDecoration: 'none',
               }}>
-                <Icon path={ICONS[n.icon]} size={15} color={active ? '#60a5fa' : 'var(--text2)'} />
+                <Icon path={ICONS[n.icon]} size={15} color={active ? 'var(--brand-text)' : 'var(--text2)'} />
                 {n.label}
               </Link>
             )
@@ -113,7 +113,7 @@ export default function AdminLayout({ children }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 8px', background: 'var(--surface2)', borderRadius: 8 }}>
             <div style={{
               width: 28, height: 28, borderRadius: '50%',
-              background: 'linear-gradient(135deg,#1d4ed8,#3b82f6)',
+              background: 'linear-gradient(135deg,var(--brand-dark),var(--brand))',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 11, color: '#fff', fontWeight: 800, flexShrink: 0,
             }}>{initials}</div>
@@ -125,7 +125,7 @@ export default function AdminLayout({ children }) {
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               width: 30, height: 30, flexShrink: 0,
               background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)',
-              borderRadius: 8, color: '#fca5a5', cursor: 'pointer',
+              borderRadius: 8, color: 'var(--danger)', cursor: 'pointer',
             }}>
               <Icon path={ICONS.logout} size={14} color="currentColor" />
             </button>
@@ -143,8 +143,8 @@ export default function AdminLayout({ children }) {
           borderBottom: '1px solid rgba(245,158,11,0.25)',
           flexShrink: 0,
         }}>
-          <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#f59e0b', flexShrink: 0 }} />
-          <span style={{ fontSize: 12, fontWeight: 700, color: '#f59e0b', letterSpacing: '0.5px' }}>
+          <span style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--warning)', flexShrink: 0 }} />
+          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--warning)', letterSpacing: '0.5px' }}>
             PORTAL ADMINISTRATIVO
           </span>
           <span style={{ fontSize: 12, color: 'var(--text4)' }}>·</span>
