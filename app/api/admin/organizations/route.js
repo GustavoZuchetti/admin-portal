@@ -1,6 +1,9 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
 
+// Rota de administração: nunca pode servir resposta cacheada.
+export const dynamic = 'force-dynamic'
+
 // Lista organizações com contagem real de empresas/usuários via SERVICE ROLE.
 // A listagem do cliente (chave anônima) sofre RLS: após o fix de isolamento
 // multi-org, o super_admin só via empresas/perfis da PRÓPRIA org — por isso a
@@ -8,7 +11,13 @@ import { NextResponse } from 'next/server'
 function getAdmin() {
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
-    process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-key'
+    process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-key',
+    {
+      // CRÍTICO: o Next.js 14 cacheia fetch GET por padrão em route handlers —
+      // os SELECTs do PostgREST voltavam CONGELADOS (usuário recém-criado não
+      // aparecia na lista nem no detalhe da organização).
+      global: { fetch: (url, opts = {}) => fetch(url, { ...opts, cache: 'no-store' }) },
+    }
   )
 }
 

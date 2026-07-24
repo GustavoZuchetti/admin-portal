@@ -174,10 +174,17 @@ function ModalUsuario({ orgs, onClose, onSuccess }) {
             <div>
               <label style={lbl}>Senha temporária</label>
               <div style={{ position:'relative' }}>
-                <input style={{ ...inp, paddingRight:80 }} type={verSenha?'text':'password'} placeholder="Mínimo 8 caracteres" value={senha} onChange={e=>setSenha(e.target.value)} />
-                <div style={{ position:'absolute', right:8, top:'50%', transform:'translateY(-50%)', display:'flex', gap:4 }}>
-                  <button type="button" onClick={()=>setVerSenha(v=>!v)} title={verSenha?'Ocultar':'Mostrar'} style={{ background:'transparent', border:'none', color:'#64748b', cursor:'pointer', padding:'2px 4px', fontSize:14 }}>{verSenha?'🙈':'👁'}</button>
-                  <button type="button" onClick={()=>setSenha(gerarSenha())} title="Gerar senha" style={{ background:'transparent', border:'none', color:'#64748b', cursor:'pointer', padding:'2px 4px', fontSize:14 }}>🎲</button>
+                <input style={{ ...inp, paddingRight:150 }} type={verSenha?'text':'password'} placeholder="Mínimo 8 caracteres" value={senha} onChange={e=>setSenha(e.target.value)} />
+                <div style={{ position:'absolute', right:8, top:'50%', transform:'translateY(-50%)', display:'flex', gap:6, alignItems:'center' }}>
+                  <button type="button" onClick={()=>setVerSenha(v=>!v)}
+                    style={{ background:'transparent', border:'none', color:'#94a3b8', cursor:'pointer', padding:'3px 6px', fontSize:11.5, fontWeight:600, textDecoration:'underline', textUnderlineOffset:2 }}>
+                    {verSenha ? 'Ocultar' : 'Mostrar'}
+                  </button>
+                  <span style={{ color:'#334155' }}>|</span>
+                  <button type="button" onClick={()=>setSenha(gerarSenha())} title="Cria uma senha aleatória forte"
+                    style={{ background:'transparent', border:'none', color:'#94a3b8', cursor:'pointer', padding:'3px 6px', fontSize:11.5, fontWeight:600, textDecoration:'underline', textUnderlineOffset:2 }}>
+                    Gerar
+                  </button>
                 </div>
               </div>
               {senha && (

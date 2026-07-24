@@ -53,7 +53,7 @@ export default function Organizations() {
               </Link>
               <a href={`${CLIENT_URL}?org=${o.id}`} target="_blank" rel="noreferrer"
                 style={{ background:'rgba(139,92,246,0.1)',color:'#a78bfa',border:'1px solid rgba(139,92,246,0.2)',padding:'6px 14px',borderRadius:7,fontSize:12,fontWeight:600,textDecoration:'none' }}>
-                👁 Ver Portal
+                Ver Portal
               </a>
             </div>
           </div>

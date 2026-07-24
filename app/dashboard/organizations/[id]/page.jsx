@@ -64,7 +64,7 @@ export default function OrgDetail() {
         <h1 style={{ fontSize:20,fontWeight:800,color:'var(--text1)',margin:0 }}>{org.nome}</h1>
         <a href={`${CLIENT_URL}?org=${id}`} target="_blank" rel="noreferrer"
           style={{ marginLeft:'auto',background:'rgba(139,92,246,0.1)',color:'#a78bfa',border:'1px solid rgba(139,92,246,0.2)',padding:'7px 16px',borderRadius:8,fontSize:13,fontWeight:600,textDecoration:'none' }}>
-          👁 Ver como cliente
+          Ver como cliente
         </a>
       </div>
 

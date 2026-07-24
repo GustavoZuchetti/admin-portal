@@ -1,4 +1,7 @@
 import { NextResponse } from 'next/server'
+
+// Rota de administração: nunca pode servir resposta cacheada.
+export const dynamic = 'force-dynamic'
 import { getAdminClient } from '@/lib/supabase-admin'
 
 export async function POST(req) {
