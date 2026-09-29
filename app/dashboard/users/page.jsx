@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
+import { adminFetch, readJson } from '@/lib/admin-session'
 
 const CLIENT_URL = process.env.NEXT_PUBLIC_CLIENT_PORTAL_URL || 'https://financial-dashboard-omega-six.vercel.app'
 
@@ -288,13 +289,20 @@ export default function Users() {
   const [showModal, setShowModal] = useState(false)
 
   const loadData = useCallback(async () => {
-    const [{ data: u }, { data: o }] = await Promise.all([
-      (async () => { const { data: { session } } = await supabase.auth.getSession(); const r = await fetch('/api/admin/data?scope=users', { headers: { 'Authorization': `Bearer ${session?.access_token}` } }); const j = await r.json(); return { data: j.users || [] } })(),
-      supabase.from('organizations').select('id, nome, status, plano').order('nome'),
-    ])
-    setUsers(u || [])
-    setOrgs(o || [])
-    setLoading(false)
+    try {
+      const [{ response: r, unauthenticated }, { data: o, error: orgError }] = await Promise.all([
+        adminFetch('/api/admin/data?scope=users'),
+        supabase.from('organizations').select('id, nome, status, plano').order('nome'),
+      ])
+      if (unauthenticated) throw new Error('Sessão administrativa expirada. Faça login novamente.')
+      const j = await readJson(r)
+      if (!r.ok) throw new Error(j.error || 'Erro ao carregar usuários.')
+      if (orgError) throw new Error(orgError.message)
+      setUsers(j.users || [])
+      setOrgs(o || [])
+    } catch (e) {
+      setUsers([]); setOrgs([]); window.alert(e.message)
+    } finally { setLoading(false) }
   }, [])
 
   useEffect(() => { loadData() }, [loadData])

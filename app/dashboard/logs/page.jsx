@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
+import { adminFetch, getFreshSession, readJson } from '@/lib/admin-session'
 
 const TABELA_LABEL = {
   empresas:            'Empresas',
@@ -83,13 +84,15 @@ export default function Logs() {
   const pageSize = 50
 
   useEffect(() => {
-    supabase.from('organizations').select('id,nome').order('nome').then(({ data }) => setOrgs(data || []))
+    getFreshSession().then(session => {
+      if (!session) return
+      supabase.from('organizations').select('id,nome').order('nome').then(({ data }) => setOrgs(data || []))
+    })
   }, [])
 
   const carregar = useCallback(async () => {
     setLoading(true); setErro(null)
     try {
-      const { data: { session } } = await supabase.auth.getSession()
       const params = new URLSearchParams({ page: String(page), page_size: String(pageSize) })
       if (fOrg)    params.set('organization_id', fOrg)
       if (fTabela) params.set('table_name', fTabela)
@@ -98,10 +101,9 @@ export default function Logs() {
       if (fDe)     params.set('date_from', fDe)
       if (fAte)    params.set('date_to', fAte)
 
-      const res = await fetch(`/api/admin/logs?${params}`, {
-        headers: { Authorization: 'Bearer ' + (session?.access_token || '') }
-      })
-      const json = await res.json()
+      const { response: res, unauthenticated } = await adminFetch(`/api/admin/logs?${params}`)
+      if (unauthenticated) throw new Error('Sessão administrativa expirada. Faça login novamente.')
+      const json = await readJson(res)
       if (!res.ok) {
         setErro(json.error || 'Erro ao carregar logs')
         setTabelaAusente(!!json.tabelaAusente)

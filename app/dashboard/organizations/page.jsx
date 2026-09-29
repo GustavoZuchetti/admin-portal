@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
+import { adminFetch, readJson } from '@/lib/admin-session'
 
 export default function Organizations() {
   const [orgs, setOrgs]       = useState([])
@@ -12,15 +13,12 @@ export default function Organizations() {
   const load = async () => {
     setLoading(true)
     try {
-      // Via service role (server-side): o super admin enxerga TODAS as
-      // organizações e suas empresas/usuários, sem o recorte do RLS
-      const { data: { session } } = await supabase.auth.getSession()
-      const r = await fetch('/api/admin/organizations', {
-        headers: { 'Authorization': `Bearer ${session?.access_token}` },
-      })
-      const j = await r.json()
+      const { response: r, unauthenticated } = await adminFetch('/api/admin/organizations')
+      if (unauthenticated) throw new Error('Sessão administrativa expirada. Faça login novamente.')
+      const j = await readJson(r)
+      if (!r.ok) throw new Error(j.error || 'Erro ao carregar organizações.')
       setOrgs(j.orgs || [])
-    } catch { setOrgs([]) }
+    } catch (e) { setOrgs([]); window.alert(e.message) }
     setLoading(false)
   }
 

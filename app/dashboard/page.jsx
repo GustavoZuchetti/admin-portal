@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import SvgIcon from '@/components/SvgIcon'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
+import { adminFetch, readJson } from '@/lib/admin-session'
 
 const fmtDate = (d) => d ? new Date(d).toLocaleDateString('pt-BR') : '—'
 
@@ -15,12 +16,13 @@ export default function AdminDashboard() {
   useEffect(() => {
     const load = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession()
-        const r = await fetch('/api/admin/data?scope=dashboard', { headers: { 'Authorization': `Bearer ${session?.access_token}` } })
-        const j = await r.json()
+        const { response: r, unauthenticated } = await adminFetch('/api/admin/data?scope=dashboard')
+        if (unauthenticated) throw new Error('Sessão administrativa expirada. Faça login novamente.')
+        const j = await readJson(r)
+        if (!r.ok) throw new Error(j.error || 'Erro ao carregar o dashboard.')
         setMetrics({ orgs: j.counts?.organizations||0, usuarios: j.counts?.profiles||0, empresas: j.counts?.empresas||0, lancamentos: 0 })
         setOrgs(j.orgs || [])
-      } catch { setOrgs([]) }
+      } catch (e) { setOrgs([]); window.alert(e.message) }
       setLoading(false)
     }
     load()
